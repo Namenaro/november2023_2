@@ -24,7 +24,7 @@ class ProgramRealisation:
 
             name2 = seg_info.name2
             u2_real = self.points_names_to_points[name2]
-            v1_real = self.signal[u1_real]
+            v1_real = self.signal[u2_real]
             ii.add(u=u2_real, v=v1_real, name=name2, parent_name=name1, is_linked=True)
 
         return ii
@@ -92,4 +92,4 @@ class ProgramRealisation:
     def draw(self, ax):
         ii = self._to_interpolation_info()
         interpolator = Interpolator(inderpolation_info=ii, signal_len=len(self.signal))
-        interpolator.draw(ax, color='red', label="реализация")
+        interpolator.draw(ax, color='green', label="реализация")

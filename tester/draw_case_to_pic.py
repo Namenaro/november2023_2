@@ -15,6 +15,5 @@ def draw_case_to_pic(signal, program, program_realisation, auto_realisation):
     program_realisation.draw(ax)
     auto_realisation.draw(ax)
     ax.legend()
-
     return fig
 

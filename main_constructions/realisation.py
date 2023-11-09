@@ -65,10 +65,13 @@ class ProgramRealisation:
     def get_uv_dynamic(self):
         us = []
         vs = []
-        for segment_name in self.program.segments_oder:
+        for segment_name in self.program.segments_order:
             sement_info = self.program.names_to_segments_ifo[segment_name]
             parent_name = sement_info.parent_name_for1
-            parent_abs_coord = self.points_names_to_points[parent_name]
+            if parent_name is None:
+                parent_abs_coord = None
+            else:
+                parent_abs_coord = self.points_names_to_points[parent_name]
             v1, abs_u1, v2, abs_u2 = sement_info.get_dynamic_prediction(parent_abs_coord)
             # реальные u1,u2,v1,v2 берем из self
             real_u1 = self.points_names_to_points[sement_info.name1]
@@ -85,9 +88,9 @@ class ProgramRealisation:
             us.append(u_err1 + u_err2)
             vs.append(v_err1 + v_err2)
 
-        U = sum(us)
-        V = sum(vs)
-        return U, V
+        u = sum(us)
+        v = sum(vs)
+        return u, v
 
     def draw(self, ax):
         ii = self._to_interpolation_info()

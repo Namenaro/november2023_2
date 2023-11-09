@@ -22,7 +22,10 @@ class SegmentInfo:
     def get_dynamic_prediction(self, parent_abs_coord):
         v1 = self.v1
         v2 = self.v2
-        abs_u1 = parent_abs_coord + self.du_from_parent
+        if parent_abs_coord is not None:
+            abs_u1 = parent_abs_coord + self.du_from_parent
+        else:
+            abs_u1 = self.abs_coord1
         abs_u2 = abs_u1 + (self.abs_coord2 - self.abs_coord1)
 
         return v1, abs_u1, v2, abs_u2

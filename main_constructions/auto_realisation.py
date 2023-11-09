@@ -1,7 +1,7 @@
-from segment_info import SegmentInfo
+from .segment_info import SegmentInfo
 from utils import IdGenedator
 from interpolation1d import Interpolator, InderpolationInfo
-from program import Program
+from .program import Program
 
 
 class AutomaticRealisation:

@@ -10,7 +10,7 @@ class Interpolator:
         self.interpolation_info = inderpolation_info
 
         self.coords_to_predictions = {}  # над любой точкой сцены самое новое предсказание (хронологичски добавленное)
-        self.names_to_coords = {}  # name: coord in scene
+
         for coord in range(signal_len):
             self.coords_to_predictions[coord] = 0
 
@@ -35,32 +35,29 @@ class Interpolator:
 
     def _fill_prediction(self):
         for name in self.interpolation_info.order:
-            u_from_parent = self.interpolation_info.names_to_points[name].u
+
             v = self.interpolation_info.names_to_points[name].v
+            u = self.interpolation_info.names_to_points[name].u
+
+            self.coords_to_predictions[u] = v
+
 
             parent_name = self.interpolation_info.names_to_parents_names[name]
-
-            if parent_name is None:  # родителя нет, значит адресация абсолютная
-                self.coords_to_predictions[u_from_parent] = v
-                self.names_to_coords[name] = u_from_parent
-
-            else:  # адресация от родителя
-                parent_u = self.names_to_coords[parent_name]
-                u = parent_u + u_from_parent
-
-                self.coords_to_predictions[u] = v
-                self.names_to_coords[name] = u
-
+            if parent_name is not None:
                 if self.interpolation_info.names_to_parent_linking[name]:
+                    parent_u = self.interpolation_info.names_to_points[parent_name].u
                     parent_v = self.interpolation_info.names_to_points[parent_name].v
                     self._register_new_segment(index1=u, v1=v, index2=parent_u, v2=parent_v)
 
     def draw(self, ax, color, label=None):
         pointwise_prediction = self.get_interpolation()
+
         ax.plot(pointwise_prediction, 'o-',  c=color, markersize=2, alpha=0.5, label=label)
 
-        for name, u in self.names_to_coords.items():
-            ax.scatter(u, pointwise_prediction[u], c=color)
-            ax.annotate(str(name), (u, pointwise_prediction[u]), xytext=(5, 2), c=color, textcoords='offset points',  weight='bold')
+        for name in self.interpolation_info.order:
+            v = self.interpolation_info.names_to_points[name].v
+            u = self.interpolation_info.names_to_points[name].u
+            ax.scatter(u, v, c=color)
+            ax.annotate(str(name), (u, v), xytext=(5, 2), c=color, textcoords='offset points',  weight='bold')
         plt.legend()
 

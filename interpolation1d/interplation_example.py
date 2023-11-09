@@ -1,17 +1,23 @@
 from interpolation1d import Interpolator, InderpolationInfo
-
+from utils import HtmlLogger, get_signal_snippet, draw_ECG
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
-    interpolation_info = InderpolationInfo()
+    signal = get_signal_snippet(lead_name='i', start_coord=243, end_coord=435)
 
-    interpolation_info.add(u=14, v=6, name='first', parent_name=None)
-    interpolation_info.add(u=4, v=12, name='second', parent_name='first', is_linked=True)
-    interpolation_info.add(u=-5, v=14, name='third', parent_name='first', is_linked=True)
-    interpolation_info.add(u=15, v=18, name='fourth', parent_name='second', is_linked=False)
+    ii = InderpolationInfo()
+
+    u1 = 80
+    ii.add(u=u1, v=210, name='1')
+    u12 = u1+40
+    ii.add(u=u12, v=0, name='2', parent_name='1', is_linked=True)
+
+    u13 = u1-50
+    ii.add(u=u13, v=0, name='3', parent_name='1', is_linked=True)
 
 
     fig, ax = plt.subplots()
-    Interpolator(interpolation_info, signal_len=70).draw(ax, color='red')
+    draw_ECG(ax, signal)
+    Interpolator(ii, signal_len=len(signal)).draw(ax, color='red')
     plt.show()
 

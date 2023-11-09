@@ -33,8 +33,7 @@ class InderpolationInfo:
     def get_v_by_name(self, name):
         return self.names_to_points[name].v
 
-    def get_abs_u_by_name(self, name):
-        return self.names_to_abs_u[name]
+
 
     def __len__(self):
         return len(self.order)

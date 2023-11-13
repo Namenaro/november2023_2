@@ -33,3 +33,4 @@ class InterpolationSegment:
         step = (self.right_val - self.left_val) / (len(self.coords)-1)
         for i in range(len(self.coords) ):
             self.vals.append(self.left_val + i * step)
+

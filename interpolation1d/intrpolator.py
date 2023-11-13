@@ -1,13 +1,18 @@
 import matplotlib.pyplot as plt
 
-from .interpolation_info import InderpolationInfo
 from .segment import InterpolationSegment
 
+class Point:
+    def __init__(self, u, v, name):
+        self.u = u
+        self.v = v
+        self.name = name
 
 class Interpolator:
-    def __init__(self, inderpolation_info, signal_len):
+    def __init__(self, signal_len):
         self.signal_len = signal_len
-        self.interpolation_info = inderpolation_info
+        self.segments = []  # [InterpolationSegment, InterpolationSegment,...]
+        self.points = []
 
         self.coords_to_predictions = {}  # над любой точкой сцены самое новое предсказание (хронологичски добавленное)
 
@@ -22,8 +27,13 @@ class Interpolator:
             pointwise_prediction.append(self.coords_to_predictions[coord])
         return pointwise_prediction
 
-    def _register_new_segment(self, index1, v1, index2, v2):
+    def add_new_segment(self, index1, v1, index2, v2, name1, name2):
         seg = InterpolationSegment(index1, v1, index2, v2)
+        self.segments.append(seg)
+        self.points.append(Point(u=index1, v=v1, name=name1))
+        self.points.append(Point(u=index2, v=v2, name=name2))
+
+
         vals = seg.get_vals_from_left()
         indexes = seg.get_indexes_from_left()
 
@@ -34,30 +44,24 @@ class Interpolator:
             self.coords_to_predictions[coord] = val
 
     def _fill_prediction(self):
-        for name in self.interpolation_info.order:
+        for seg in self.segments:
 
-            v = self.interpolation_info.names_to_points[name].v
-            u = self.interpolation_info.names_to_points[name].u
+            vals = seg.get_vals_from_left()
+            indexes = seg.get_indexes_from_left()
 
-            self.coords_to_predictions[u] = v
+            for i in range(len(vals)):
+                coord = indexes[i]
+                val = vals[i]
 
-
-            parent_name = self.interpolation_info.names_to_parents_names[name]
-            if parent_name is not None:
-                if self.interpolation_info.names_to_parent_linking[name]:
-                    parent_u = self.interpolation_info.names_to_points[parent_name].u
-                    parent_v = self.interpolation_info.names_to_points[parent_name].v
-                    self._register_new_segment(index1=u, v1=v, index2=parent_u, v2=parent_v)
+                self.coords_to_predictions[coord] = val
 
     def draw(self, ax, color, label=None):
         pointwise_prediction = self.get_interpolation()
 
-        ax.plot(pointwise_prediction, 'o-',  c=color, markersize=2, alpha=0.5, label=label)
+        ax.plot(pointwise_prediction, 'o-',  c=color, markersize=2, alpha=0.8, label=label)
 
-        for name in self.interpolation_info.order:
-            v = self.interpolation_info.names_to_points[name].v
-            u = self.interpolation_info.names_to_points[name].u
-            ax.scatter(u, v, c=color)
-            ax.annotate(str(name), (u, v), xytext=(5, 2), c=color, textcoords='offset points',  weight='bold')
+        for point in self.points:
+            ax.scatter(point.u, point.v, c=color)
+            ax.annotate(str(point.name), (point.u, point.v), xytext=(5, 2), c=color, textcoords='offset points',  weight='bold',  alpha=0.8)
         plt.legend()
 

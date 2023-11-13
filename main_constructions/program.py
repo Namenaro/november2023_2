@@ -1,6 +1,6 @@
 from .segment_info import SegmentInfo
 from utils import IdGenedator
-from interpolation1d import Interpolator, InderpolationInfo
+from interpolation1d import Interpolator
 
 
 class Program:
@@ -17,13 +17,12 @@ class Program:
         self.segments_order.append(seg_name)
 
     def draw(self, signal_len, ax):
-        ii = InderpolationInfo()
+        interp = Interpolator(signal_len=signal_len)
 
         for segment_name in self.segments_order:
             seg_info = self.names_to_segments_ifo[segment_name]
-            ii.add(u=seg_info.abs_coord1, v=seg_info.v1, name=seg_info.name1, parent_name=seg_info.parent_name_for1, is_linked=False)
-            ii.add(u=seg_info.abs_coord2, v=seg_info.v2, name=seg_info.name2, parent_name=seg_info.name1, is_linked=True)
+            interp.add_new_segment(index1=seg_info.abs_coord1, v1=seg_info.v1, index2=seg_info.abs_coord2, v2=seg_info.v2, name1=seg_info.name1, name2=seg_info.name2)
 
-        interpolator = Interpolator(inderpolation_info=ii, signal_len=signal_len)
-        interpolator.draw(ax, color='blue', label="программа")
+
+        interp.draw(ax, color='blue', label="программа")
 

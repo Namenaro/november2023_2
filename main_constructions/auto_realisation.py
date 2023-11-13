@@ -1,6 +1,6 @@
 from .segment_info import SegmentInfo
 from utils import IdGenedator
-from interpolation1d import Interpolator, InderpolationInfo
+from interpolation1d import Interpolator
 from .program import Program
 
 
@@ -9,33 +9,34 @@ class AutomaticRealisation:
         self.signal = signal
         self.segments = []  # [ [abs_coord1, abs_coord2], [abs_coord1, abs_coord2], ....]
 
-    def _to_interpolation_info(self):
-        ii = InderpolationInfo()
+    def _to_interpolator(self):
+        interp = Interpolator(signal_len=len(self.signal))
         for i in range(len(self.segments)):
             segment = self.segments[i]
             abs_coord1 = segment[0]
             v1 = self.signal[abs_coord1]
             name1 = str(i) + "_1"
-            ii.add(u=abs_coord1, v=v1, name=name1, parent_name=None, is_linked=False)
+
 
             abs_coord2 = segment[1]
             v2 = self.signal[abs_coord2]
             name2 = str(i) + "_2"
-            ii.add(u=abs_coord2, v=v2, name=name2, parent_name=name1, is_linked=True)
 
-        return ii
+            interp.add_new_segment(index1=abs_coord1, v1=v1, index2=abs_coord2, v2=v2, name1=name1, name2=name2)
+
+        return interp
 
     def add_segment(self, abs_coord1, abs_coord2):
         self.segments.append([abs_coord1, abs_coord2])
 
     def draw(self, ax):
-        ii = self._to_interpolation_info()
-        interpolator = Interpolator(inderpolation_info=ii, signal_len=len(self.signal))
+
+        interpolator = self._to_interpolator()
         interpolator.draw(ax, color='red', label="лучшая")
 
     def get_E(self):
-        ii = self._to_interpolation_info()
-        interpolator = Interpolator(inderpolation_info=ii, signal_len=len(self.signal))
+        interpolator = self._to_interpolator()
+
         prediction = interpolator.get_interpolation()
         es = list([abs(self.signal[i] - prediction[i]) for i in range(len(prediction))])
         E = sum(es)

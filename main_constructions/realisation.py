@@ -1,6 +1,6 @@
 from .segment_info import SegmentInfo
 from utils import IdGenedator
-from interpolation1d import Interpolator, InderpolationInfo
+from interpolation1d import Interpolator
 from .program import Program
 
 
@@ -13,25 +13,24 @@ class ProgramRealisation:
     def add(self, point_name, point_coord_real):
         self.points_names_to_points[point_name] = point_coord_real
 
-    def _to_interpolation_info(self):
-        ii = InderpolationInfo()
+    def _to_interpolator(self):
+        interp = Interpolator(signal_len=len(self.signal))
         for segment_name in self.program.segments_order:
             seg_info = self.program.names_to_segments_ifo[segment_name]
             name1 = seg_info.name1
             u1_real = self.points_names_to_points[name1]
             v1_real = self.signal[u1_real]
-            ii.add(u=u1_real, v=v1_real, name=name1, parent_name=None, is_linked=False)
 
             name2 = seg_info.name2
             u2_real = self.points_names_to_points[name2]
-            v1_real = self.signal[u2_real]
-            ii.add(u=u2_real, v=v1_real, name=name2, parent_name=name1, is_linked=True)
+            v2_real = self.signal[u2_real]
 
-        return ii
+            interp.add_new_segment(index1=u1_real, v1=v1_real, index2=u2_real, v2=v2_real, name1=name1, name2=name2)
+
+        return interp
 
     def get_e(self):
-        ii = self._to_interpolation_info()
-        interpolator = Interpolator(inderpolation_info=ii, signal_len=len(self.signal))
+        interpolator = self._to_interpolator()
         prediction = interpolator.get_interpolation()
         es = list([abs(self.signal[i] - prediction[i]) for i in range(len(prediction))])
         e = sum(es)
@@ -93,6 +92,5 @@ class ProgramRealisation:
         return u, v
 
     def draw(self, ax):
-        ii = self._to_interpolation_info()
-        interpolator = Interpolator(inderpolation_info=ii, signal_len=len(self.signal))
-        interpolator.draw(ax, color='green', label="реализация")
+        interp = self._to_interpolator()
+        interp.draw(ax, color='green', label="реализация")

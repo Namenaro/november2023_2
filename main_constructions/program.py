@@ -26,3 +26,5 @@ class Program:
 
         interp.draw(ax, color='blue', label="программа")
 
+    def get_num_segments(self):
+        return len(self.names_to_segments_ifo)

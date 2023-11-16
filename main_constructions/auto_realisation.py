@@ -9,6 +9,8 @@ class AutomaticRealisation:
         self.signal = signal
         self.segments = []  # [ [abs_coord1, abs_coord2], [abs_coord1, abs_coord2], ....]
 
+
+
     def _to_interpolator(self):
         interp = Interpolator(signal_len=len(self.signal))
         for i in range(len(self.segments)):
@@ -23,6 +25,7 @@ class AutomaticRealisation:
             name2 = str(i) + "_2"
 
             interp.add_new_segment(index1=abs_coord1, v1=v1, index2=abs_coord2, v2=v2, name1=name1, name2=name2)
+
 
         return interp
 
@@ -63,6 +66,11 @@ class AutomaticRealisation:
 
             us.append(err_u1 + err_u2)
             vs.append(err_v1 + err_v2)
-        U = sum(us)
-        V = sum(vs)
-        return U, V
+
+        return us, vs
+
+    def get_num_segments(self):
+        return len(self.segments)
+
+
+

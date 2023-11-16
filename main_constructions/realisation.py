@@ -57,9 +57,8 @@ class ProgramRealisation:
             us.append(u_err1 + u_err2)
             vs.append(v_err1 + v_err2)
 
-        u = sum(us)
-        v = sum(vs)
-        return u, v
+
+        return us, vs
 
     def get_uv_dynamic(self):
         us = []
@@ -87,10 +86,13 @@ class ProgramRealisation:
             us.append(u_err1 + u_err2)
             vs.append(v_err1 + v_err2)
 
-        u = sum(us)
-        v = sum(vs)
-        return u, v
+
+        return us, vs
 
     def draw(self, ax):
         interp = self._to_interpolator()
         interp.draw(ax, color='green', label="реализация")
+
+    def get_num_events(self):
+        return len(self.points_names_to_points)
+

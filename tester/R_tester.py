@@ -42,10 +42,10 @@ def ideal_case(log):
     auto_realisation.add_segment(abs_coord1=u1, abs_coord2=u3)
 
     # логируем результат
-    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation)
+    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation, signal=signal)
     r_form.calc_and_log(log)
     fig = draw_case_to_pic(signal, program, program_realisation, auto_realisation)
-    # plt.show()
+    plt.show()
     log.add_fig(fig)
 
 
@@ -94,7 +94,7 @@ def good_case(log):
     auto_realisation.add_segment(abs_coord1=u1, abs_coord2=u3)
 
     # логируем результат
-    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation)
+    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation, signal=signal)
     r_form.calc_and_log(log)
     fig = draw_case_to_pic(signal, program, program_realisation, auto_realisation)
     #plt.show()
@@ -143,7 +143,7 @@ def good_case2(log):
     auto_realisation.add_segment(abs_coord1=u1, abs_coord2=u3)
 
     # логируем результат
-    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation)
+    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation, signal=signal)
     r_form.calc_and_log(log)
     fig = draw_case_to_pic(signal, program, program_realisation, auto_realisation)
     log.add_fig(fig)
@@ -191,7 +191,7 @@ def bad_case1(log):
     auto_realisation.add_segment(abs_coord1=u1, abs_coord2=u3)
 
     # логируем результат
-    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation)
+    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation, signal=signal)
     r_form.calc_and_log(log)
     fig = draw_case_to_pic(signal, program, program_realisation, auto_realisation)
     log.add_fig(fig)
@@ -240,7 +240,7 @@ def bad_case2(log):
     auto_realisation.add_segment(abs_coord1=u1, abs_coord2=u3)
 
     # логируем результат
-    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation)
+    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation, signal=signal)
     r_form.calc_and_log(log)
     fig = draw_case_to_pic(signal, program, program_realisation, auto_realisation)
     log.add_fig(fig)
@@ -289,7 +289,7 @@ def bad_case3(log):
     auto_realisation.add_segment(abs_coord1=u1, abs_coord2=u3)
 
     # логируем результат
-    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation)
+    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation, signal=signal)
     r_form.calc_and_log(log)
     fig = draw_case_to_pic(signal, program, program_realisation, auto_realisation)
     log.add_fig(fig)
@@ -344,7 +344,7 @@ def bad_case4(log):
     auto_realisation.add_segment(abs_coord1=u1, abs_coord2=u3)
 
     # логируем результат
-    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation)
+    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation, signal=signal)
     r_form.calc_and_log(log)
     fig = draw_case_to_pic(signal, program, program_realisation, auto_realisation)
     #plt.show()
@@ -407,7 +407,7 @@ def bad_case5(log):
     auto_realisation.add_segment(abs_coord1=u1, abs_coord2=u3)
 
     # логируем результат
-    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation)
+    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation, signal=signal)
     r_form.calc_and_log(log)
     fig = draw_case_to_pic(signal, program, program_realisation, auto_realisation)
     # plt.show()
@@ -478,7 +478,7 @@ def bad_case6(log):
     auto_realisation.add_segment(abs_coord1=u1, abs_coord2=u3)
 
     # логируем результат
-    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation)
+    r_form = RFormula(program, realisation=program_realisation, auto_realisation=auto_realisation, signal=signal)
     r_form.calc_and_log(log)
     fig = draw_case_to_pic(signal, program, program_realisation, auto_realisation)
     # plt.show()

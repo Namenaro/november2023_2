@@ -85,9 +85,8 @@ class RFormula:
 
         return r
 
-    def r_variant(self, signal_area, E_abs, Us, Vs, N_segments, e_abs, us, vs, n_segments):
+    def r_variant(self, signal_area, E_abs, Us, Vs, N_segments, e_abs, us, vs, n_segments): #ОСНОВНОЙ (с автоинтерполятором)
         us_f = Us + us
-
         vs_f = Vs + vs
 
         normed_us = [(u - min(us_f)) / max(us_f) for u in us]
@@ -113,7 +112,6 @@ class RFormula:
         self.data['sigma_profit'] = sigma_profit
         self.data['sigma_u'] = sigma_u
         self.data['sigma_v'] = sigma_v
-
         return r
 
-
+     
